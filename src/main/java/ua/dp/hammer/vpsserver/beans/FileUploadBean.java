@@ -2,6 +2,8 @@ package ua.dp.hammer.vpsserver.beans;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -26,14 +28,21 @@ public class FileUploadBean {
 
    private static final ExecutorService THREAD_POOL = Executors.newFixedThreadPool(5);
    private static final String FILE_NAME_PATTERN = "yyyy-MM-dd_HH-mm-ss-SSS";
-   private static final String FILE_EXTENSION = ".ts";
    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(FILE_NAME_PATTERN);
    private static final int BUFFER_SIZE = 10 * 1024 * 1024;
 
+   private String fileExtension;
+   private String videoDirectory;
    private ServerSocket serverSocket;
+
+   @Autowired
+   private Environment environment;
 
    @PostConstruct
    public void init() {
+      fileExtension = environment.getRequiredProperty("JAVA_VPS_SERVER_VIDEO_FILES_EXTENSION");
+      videoDirectory = environment.getRequiredProperty("JAVA_VPS_SERVER_VIDEO_DIRECTORY");
+
       try {
          serverSocket = new ServerSocket(8081);
          listenConnections();
@@ -55,7 +64,7 @@ public class FileUploadBean {
       }
    }
 
-   private static class Handler implements Runnable {
+   private class Handler implements Runnable {
       private final Socket socket;
 
       public Handler(Socket socket) {
@@ -63,10 +72,10 @@ public class FileUploadBean {
       }
 
       public void run() {
-         String fileName = SIMPLE_DATE_FORMAT.format(new Date()) + FILE_EXTENSION;
+         String fileName = SIMPLE_DATE_FORMAT.format(new Date()) + fileExtension;
          LOGGER.info("Adding new file: " + fileName);
 
-         try (OutputStream outputStream = Files.newOutputStream(FileSystems.getDefault().getPath("C:/" + fileName));
+         try (OutputStream outputStream = Files.newOutputStream(FileSystems.getDefault().getPath(videoDirectory + fileName));
               BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream, BUFFER_SIZE);
               BufferedInputStream bufferedInputStream = new BufferedInputStream(socket.getInputStream(), BUFFER_SIZE)) {
 
@@ -76,6 +85,7 @@ public class FileUploadBean {
                bytes++;
                bufferedOutputStream.write(data);
             }
+
             LOGGER.info("Added file size: " + (bytes / 1024) + "KB");
          } catch (IOException e) {
             LOGGER.error(e);
