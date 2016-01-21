@@ -8,12 +8,14 @@ Ext.define('VPSServer.Application', {
     
     name: 'VPSServer',
 
-    stores: [
-        // TODO: add global / shared stores here
-    ],
+    //stores: ['VPSServer.store.FilesStore'],
+    //models: ['VPSServer.model.LoginModel', 'VPSServer.model.FileModel'],
+    //views: ['VPSServer.view.MainView', 'VPSServer.view.LoginView'],
+    //controllers: ['VPSServer.controller.LoginController'],
+
+    //autoCreateViewport: 'VPSServer.view.MainView',
     
     launch: function () {
-        // TODO - Launch the application
     },
 
     onAppUpdate: function () {
