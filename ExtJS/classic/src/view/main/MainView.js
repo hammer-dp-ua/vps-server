@@ -13,10 +13,13 @@ Ext.define('VPSServer.view.main.MainView', {
    alias: 'view.main',
 
    items: [{
-         xtype: 'formlogin'
+         xtype: 'formlogin',
+         hidden: true,
+         reference: 'formlogin'
       }, {
          xtype: 'gridfiles',
-         hidden: true
+         hidden: true,
+         reference: 'gridfiles'
       }
    ]
 });

@@ -4,8 +4,8 @@ Ext.define('VPSServer.view.login.LoginViewModel', {
    alias: 'viewmodel.login',
 
    data: {
-      name: 'a',
-      password: 'b',
+      userId: null,
+      password: null,
       remember: true
    }
 });

@@ -13,7 +13,7 @@ Ext.define('VPSServer.Application', {
     //views: ['VPSServer.view.MainView', 'VPSServer.view.LoginView'],
     //controllers: ['VPSServer.controller.LoginController'],
 
-    //autoCreateViewport: 'VPSServer.view.MainView',
+    autoCreateViewport: 'VPSServer.view.main.MainView',
     
     launch: function () {
     },

@@ -2,12 +2,14 @@ Ext.define('VPSServer.model.LoginModel', {
    extend: 'Ext.data.Model',
 
    fields: [
-      {name: 'id',   type: 'string'},
+      {name: 'userId', type: 'string'},
       {name: 'pass', type: 'string'}
    ],
 
    proxy: {
       type: 'rest',
-      url : '/video/rest/login'
+      buildUrl: function(request) {
+         return '/video/rest/login';
+      }
    }
 });

@@ -22,7 +22,7 @@ Ext.define('VPSServer.view.login.LoginView', {
       allowBlank: false,
       fieldLabel: 'User ID',
       emptyText: 'user id',
-      bind: '{name}',
+      bind: '{userId}',
       reference: 'user'
    }, {
       xtype: 'textfield',
