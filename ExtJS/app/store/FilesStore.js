@@ -1,11 +1,18 @@
 Ext.define('VPSServer.store.FilesStore', {
    extend: 'Ext.data.Store',
+
+   alias: 'store.filesStore',
    model: 'VPSServer.model.FileModel',
 
-   data : [
-      {name: '123', creationDate: '2016', size: 999},
-      {name: '456', creationDate: '2016', size: 998},
-      {name: '789', creationDate: '2016', size: 997},
-      {name: '101112', creationDate: '2016', size: 996}
-   ]
+   proxy: {
+      type: 'rest',
+      api: {
+         read: 'mocks/files.json',
+         destroy: '/video/rest/files'
+      },
+      //url: '/video/rest/files',
+      reader: {
+         type : 'json'
+      }
+   }
 });

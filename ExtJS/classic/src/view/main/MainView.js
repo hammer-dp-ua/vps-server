@@ -12,14 +12,27 @@ Ext.define('VPSServer.view.main.MainView', {
    controller: 'main',
    alias: 'view.main',
 
+   layout: 'border',
+
    items: [{
-         xtype: 'formlogin',
-         hidden: true,
-         reference: 'formlogin'
-      }, {
-         xtype: 'gridfiles',
-         hidden: true,
-         reference: 'gridfiles'
-      }
-   ]
+      xtype: 'window',
+      region: 'center',
+      hidden: true,
+      header: false,
+      reference: 'formlogin',
+      items: [{
+         xtype: 'formlogin'
+      }]
+   }, {
+      xtype: 'gridfiles',
+      region: 'center',
+      hidden: true,
+      reference: 'gridfiles'
+   }, {
+      region: 'west',
+      width: '30%'
+   }, {
+      region: 'east',
+      width: '30%'
+   }]
 });

@@ -27,10 +27,15 @@ Ext.define('VPSServer.view.login.LoginController', {
                } else {
                   expirationDate.setMonth(currentMonth + 1);
                }
-               Ext.util.Cookies.create(VPSServer.view.main.MainController.CREDENTIALS_COOKIE, '', expirationDate)
+
+               Ext.util.Cookies.create(VPSServer.view.main.MainController.CREDENTIALS_COOKIE, '~~~', expirationDate);
+               this.getView().hide();
+               Ext.GlobalEvents.fireEvent('successfulLogin');
+
+               this.lookupReference('wrongloginorpassword').show();
             },
             failure: function(response, opts) {
-
+               Ext.Msg.alert('Error', response);
             }
          });
       }

@@ -15,6 +15,7 @@ Ext.define('VPSServer.view.login.LoginView', {
    title: 'Login',
    frame: true,
    width: 320,
+   height: 'auto',
    bodyPadding: 10,
 
    items: [{
@@ -39,6 +40,20 @@ Ext.define('VPSServer.view.login.LoginView', {
       reference : 'remember'
    }],
 
+   dockedItems: [{
+      xtype: 'label',
+      dock: 'bottom',
+      text: 'Wrong User or Password',
+      hidden: true,
+      reference: 'wrongloginorpassword',
+      style: {
+         color: 'red',
+         'text-align': 'center',
+         padding: '5px',
+         'font-weight': 'bold'
+      }
+   }],
+
    buttons: [{
       id: 'loginbutton',
       text: 'Login',
@@ -52,8 +67,6 @@ Ext.define('VPSServer.view.login.LoginView', {
          anchor: '100%',
          labelWidth: 120
       };
-
       this.callParent();
-      this.center();
    }
 });
