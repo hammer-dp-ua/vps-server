@@ -6,12 +6,12 @@ Ext.define('VPSServer.view.fileslist.FilesController', {
    },
 
    onAfterRender: function() {
-      this.getViewModel().getStore('viewModelFilesStore').load();
+      //this.getViewModel().getStore('viewModelFilesStore').load();
+      this.getView().getStore('filesStore').load();
    },
 
    onClickDelete: function(grid, rowIndex, colIndex) {
       var store = grid.getStore();
       store.removeAt(rowIndex);
-      store.sync();
    }
 });

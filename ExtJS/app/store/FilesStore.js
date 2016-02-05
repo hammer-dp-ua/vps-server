@@ -4,13 +4,14 @@ Ext.define('VPSServer.store.FilesStore', {
    alias: 'store.filesStore',
    model: 'VPSServer.model.FileModel',
 
+   autoSync: true,
    proxy: {
       type: 'rest',
-      api: {
+      /*api: {
          read: 'mocks/files.json',
          destroy: '/video/rest/files'
-      },
-      //url: '/video/rest/files',
+      },*/
+      url: '/video/rest/files',
       reader: {
          type : 'json'
       }

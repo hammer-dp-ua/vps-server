@@ -4,8 +4,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import ua.dp.hammer.vpsserver.config.AppConfig;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedInputStream;
@@ -22,9 +22,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Component
-public class FileUploadBean {
+public class FileUploaderBean {
 
-   private static final Logger LOGGER = LogManager.getLogger(FileUploadBean.class);
+   private static final Logger LOGGER = LogManager.getLogger(FileUploaderBean.class);
 
    private static final ExecutorService THREAD_POOL = Executors.newFixedThreadPool(5);
    private static final String FILE_NAME_PATTERN = "yyyy-MM-dd_HH-mm-ss-SSS";
@@ -37,29 +37,36 @@ public class FileUploadBean {
 
    @Autowired
    private Environment environment;
+   @Autowired
+   private AppConfig appConfig;
 
    @PostConstruct
    public void init() {
       fileExtension = environment.getRequiredProperty("JAVA_VPS_SERVER_VIDEO_FILES_EXTENSION");
-      videoDirectory = environment.getRequiredProperty("JAVA_VPS_SERVER_VIDEO_DIRECTORY");
+      videoDirectory = appConfig.getVideoDirectory();
+      String serverSocketPort = environment.getRequiredProperty("JAVA_VPS_SERVER_SOCKET_PORT");
 
       try {
-         serverSocket = new ServerSocket(8081);
-         listenConnections();
+         serverSocket = new ServerSocket(Integer.parseInt(serverSocketPort));
+         new Thread(new Runnable() {
+            @Override
+            public void run() {
+               listenConnections();
+            }
+         }).start();
       } catch (IOException e) {
          LOGGER.error(e);
       }
    }
 
-   @Async
-   public void listenConnections() throws IOException {
+   public void listenConnections() {
       while (true) {
          try {
             Socket clientSocket = serverSocket.accept();
             THREAD_POOL.execute(new Handler(clientSocket));
          } catch (IOException e) {
             THREAD_POOL.shutdown();
-            throw new IOException(e);
+            LOGGER.error(e);
          }
       }
    }

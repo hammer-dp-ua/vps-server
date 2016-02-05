@@ -4,14 +4,18 @@ Ext.define('VPSServer.view.fileslist.FilesView', {
    requires: [
       'VPSServer.model.FileModel',
       'VPSServer.view.fileslist.FilesViewModel',
-      'VPSServer.view.fileslist.FilesController'
+      'VPSServer.view.fileslist.FilesController',
+      'VPSServer.store.FilesStore'
    ],
    controller: 'files',
    viewModel: {
       type: 'filesViewModel'
    },
-   bind: {
+   /*bind: {
       store: '{viewModelFilesStore}'
+   },*/
+   store: {
+      type: 'filesStore'
    },
    reference: 'filesView', // This config uses the reference to determine the name of the data object to place in the ViewModel
 

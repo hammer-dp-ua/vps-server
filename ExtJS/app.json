@@ -564,7 +564,7 @@
             "sass": {
                 // "save": "classic/sass/save.scss"
             }
-        },
+        }/*,
 
         "modern": {
             "toolkit": "modern",
@@ -574,7 +574,7 @@
             "sass": {
                 // "save": "modern/sass/save.scss"
             }
-        }
+        }*/
     },
 
     /**

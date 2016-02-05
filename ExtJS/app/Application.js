@@ -10,7 +10,7 @@ Ext.define('VPSServer.Application', {
 
     //Ext.ComponentQuery.query('formlogin')[0].center()
 
-    autoCreateViewport: 'VPSServer.view.main.MainView',
+    //autoCreateViewport: 'VPSServer.view.main.MainView',
     
     launch: function () {
     },
