@@ -13,5 +13,12 @@ Ext.define('VPSServer.view.fileslist.FilesController', {
    onClickDelete: function(grid, rowIndex, colIndex) {
       var store = grid.getStore();
       store.removeAt(rowIndex);
+   },
+
+   onClickDownload: function(grid, rowIndex, colIndex) {
+      var store = grid.getStore();
+      var fileName = store.getAt(rowIndex).get('name');
+
+      window.open('/video/rest/files/' + fileName);
    }
 });

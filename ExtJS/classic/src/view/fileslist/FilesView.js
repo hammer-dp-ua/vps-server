@@ -25,7 +25,7 @@ Ext.define('VPSServer.view.fileslist.FilesView', {
    columns: [
       {text: "Name", dataIndex: "name", sortable: true, width: '35%'},
       {text: "Creation date", dataIndex: "creationDate", sortable: true, width: '35%'},
-      {text: "Size, KB", dataIndex: "size", sortable: true, width: '19%'},
+      {text: "Size, MB", dataIndex: "size", sortable: true, width: '19%'},
       {
          menuDisabled: true,
          sortable: false,
@@ -34,7 +34,8 @@ Ext.define('VPSServer.view.fileslist.FilesView', {
          width: '5%',
          items: [{
             iconCls: 'pictos pictos-download',
-            tooltip: 'Download'
+            tooltip: 'Download',
+            handler: 'onClickDownload'
          }]
       },
       {

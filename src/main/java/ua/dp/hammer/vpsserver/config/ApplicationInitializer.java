@@ -28,25 +28,9 @@ public class ApplicationInitializer implements WebApplicationInitializer {
 
       // Creates the root application context
       context.setConfigLocation("ua.dp.hammer.vpsserver.config");
-      //context.setDisplayName("VPS Server");
 
       ServletRegistration.Dynamic dispatcher = container.addServlet("dispatcher", new DispatcherServlet(context));
       dispatcher.setLoadOnStartup(1);
       dispatcher.addMapping("/");
    }
-
-   /*@Override
-   protected Class<?>[] getServletConfigClasses() {
-      return new Class[] { WebConfig.class };
-   }
-
-   @Override
-   protected String[] getServletMappings() {
-      return new String[] { "/" };
-   }
-
-   @Override
-   protected Class<?>[] getRootConfigClasses() {
-      return null;
-   }*/
 }
