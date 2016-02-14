@@ -8,7 +8,7 @@ Ext.define('VPSServer.view.login.LoginController', {
 
       if (viewModelData.userId && viewModelData.password) {
          Ext.Ajax.request({
-            url: '/video/rest/login',
+            url: VPSServer.view.main.MainController.LOGIN_URI,
             method: 'POST',
             params: {
                userId: viewModelData.userId,

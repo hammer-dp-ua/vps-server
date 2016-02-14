@@ -18,15 +18,12 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Component
 public class FileUploaderBean {
 
    private static final Logger LOGGER = LogManager.getLogger(FileUploaderBean.class);
 
-   private static final ExecutorService THREAD_POOL = Executors.newFixedThreadPool(5);
    private static final String FILE_NAME_PATTERN = "yyyy-MM-dd_HH-mm-ss-SSS";
    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(FILE_NAME_PATTERN);
    private static final int BUFFER_SIZE = 10 * 1024 * 1024;
@@ -63,37 +60,24 @@ public class FileUploaderBean {
       while (true) {
          try {
             Socket clientSocket = serverSocket.accept();
-            THREAD_POOL.execute(new Handler(clientSocket));
-         } catch (IOException e) {
-            THREAD_POOL.shutdown();
-            LOGGER.error(e);
-         }
-      }
-   }
+            String fileName = SIMPLE_DATE_FORMAT.format(new Date()) + fileExtension;
 
-   private class Handler implements Runnable {
-      private final Socket socket;
+            try (OutputStream outputStream = Files.newOutputStream(FileSystems.getDefault().getPath(videoDirectory + "/" + fileName));
+                 BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream, BUFFER_SIZE);
+                 BufferedInputStream bufferedInputStream = new BufferedInputStream(clientSocket.getInputStream(), BUFFER_SIZE)) {
+               LOGGER.info("Adding new file: " + fileName);
 
-      public Handler(Socket socket) {
-         this.socket = socket;
-      }
+               int data;
+               int bytes = 0;
+               while ((data = bufferedInputStream.read()) != -1) {
+                  bytes++;
+                  bufferedOutputStream.write(data);
+               }
 
-      public void run() {
-         String fileName = SIMPLE_DATE_FORMAT.format(new Date()) + fileExtension;
-         LOGGER.info("Adding new file: " + fileName);
-
-         try (OutputStream outputStream = Files.newOutputStream(FileSystems.getDefault().getPath(videoDirectory + fileName));
-              BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream, BUFFER_SIZE);
-              BufferedInputStream bufferedInputStream = new BufferedInputStream(socket.getInputStream(), BUFFER_SIZE)) {
-
-            int data;
-            int bytes = 0;
-            while ((data = bufferedInputStream.read()) != -1) {
-               bytes++;
-               bufferedOutputStream.write(data);
+               LOGGER.info("Added file size: " + (bytes / 1024) + "KB");
+            } catch (IOException e) {
+               LOGGER.error(e);
             }
-
-            LOGGER.info("Added file size: " + (bytes / 1024) + "KB");
          } catch (IOException e) {
             LOGGER.error(e);
          }

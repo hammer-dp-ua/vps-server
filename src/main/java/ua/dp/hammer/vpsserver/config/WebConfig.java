@@ -1,12 +1,15 @@
 package ua.dp.hammer.vpsserver.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
-import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.accept.ContentNegotiationManager;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
@@ -14,44 +17,37 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class WebConfig extends WebMvcConfigurerAdapter {
 
    @Override
-   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-      registry.addResourceHandler("/resources/**")
-            .addResourceLocations("/resources/");
+   public void addViewControllers(ViewControllerRegistry registry) {
+      registry.addViewController("/").setViewName("index");
    }
 
-   /*@Bean
-   public InternalResourceViewResolver viewResolver() {
-      InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-      viewResolver.setViewClass(JstlView.class);
-      viewResolver.setPrefix("/WEB-INF/jsp/");
-      viewResolver.setSuffix(".jsp");
-      return viewResolver;
-   }*/
-
-   /*@Bean
-   public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
-
-      List< ViewResolver > resolvers = new ArrayList<>();
-
-      InternalResourceViewResolver r1 = new InternalResourceViewResolver();
-      r1.setPrefix("/WEB-INF/pages/");
-      r1.setSuffix(".jsp");
-      r1.setViewClass(JstlView.class);
-
-      resolvers.add(r1);
-
-      JsonViewResolver r2 = new JsonViewResolver();
-      resolvers.add(r2);
-
-      ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
-      resolver.setViewResolvers(resolvers);
-      resolver.setContentNegotiationManager(manager);
-      return resolver;
-
-   }*/
+   @Override
+   public void addResourceHandlers(ResourceHandlerRegistry registry) {
+      registry.addResourceHandler("/classic/**").addResourceLocations("/WEB-INF/classic/");
+      registry.addResourceHandler("/ext/**").addResourceLocations("/WEB-INF/ext/");
+      registry.addResourceHandler("/classic.json").addResourceLocations("/WEB-INF/classic.json");
+      registry.addResourceHandler("/cache.appcache").addResourceLocations("/WEB-INF/cache.appcache");
+   }
 
    @Override
    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
       configurer.defaultContentType(MediaType.APPLICATION_JSON);
+      configurer.ignoreAcceptHeader(true);
+   }
+
+   @Bean
+   public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
+      ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
+      resolver.setContentNegotiationManager(manager);
+      return resolver;
+   }
+
+   @Bean
+   public ViewResolver getJspViewResolver() {
+      InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+      resolver.setPrefix("WEB-INF/jsp/");
+      resolver.setSuffix(".jsp");
+      resolver.setViewClass(JstlView.class);
+      return resolver;
    }
 }

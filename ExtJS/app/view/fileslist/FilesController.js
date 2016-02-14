@@ -19,6 +19,6 @@ Ext.define('VPSServer.view.fileslist.FilesController', {
       var store = grid.getStore();
       var fileName = store.getAt(rowIndex).get('name');
 
-      window.open('/video/rest/files/' + fileName);
+      window.open(VPSServer.view.main.MainController.FILES_URI + fileName);
    }
 });

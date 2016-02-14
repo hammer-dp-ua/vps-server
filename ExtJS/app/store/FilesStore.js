@@ -7,11 +7,7 @@ Ext.define('VPSServer.store.FilesStore', {
    autoSync: true,
    proxy: {
       type: 'rest',
-      /*api: {
-         read: 'mocks/files.json',
-         destroy: '/video/rest/files'
-      },*/
-      url: '/video/rest/files',
+      url: VPSServer.view.main.MainController.FILES_URI,
       reader: {
          type : 'json'
       }

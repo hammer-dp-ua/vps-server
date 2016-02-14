@@ -4,7 +4,9 @@ Ext.define('VPSServer.view.main.MainController', {
    alias: 'controller.main',
 
    statics: {
-      CREDENTIALS_COOKIE: "Credentials"
+      CREDENTIALS_COOKIE: 'Credentials',
+      FILES_URI: '/vps-server/video/rest/files/',
+      LOGIN_URI: '/vps-server/video/rest/login'
    },
 
    init: function() {
