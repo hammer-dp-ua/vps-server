@@ -23,7 +23,15 @@ Ext.define('VPSServer.view.fileslist.FilesView', {
    title: 'Uploaded files',
 
    columns: [
-      {text: "Name", dataIndex: "name", sortable: true, width: '35%'},
+      {
+         text: "Name",
+         dataIndex: "name",
+         sortable: true,
+         width: '35%',
+         renderer: function (value) {
+            return '<a href="' + VPSServer.view.main.MainController.FILES_URI + value + '" target="_blank">' + value + '</a>';
+         }
+      },
       {text: "Creation date", dataIndex: "creationDate", sortable: true, width: '35%'},
       {text: "Size, MB", dataIndex: "size", sortable: true, width: '19%'},
       {

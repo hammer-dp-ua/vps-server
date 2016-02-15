@@ -4,6 +4,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import ua.dp.hammer.vpsserver.config.AppConfig;
 
@@ -20,9 +21,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Component
-public class FileUploaderBean {
+public class FileLoaderBean {
 
-   private static final Logger LOGGER = LogManager.getLogger(FileUploaderBean.class);
+   private static final Logger LOGGER = LogManager.getLogger(FileLoaderBean.class);
 
    private static final String FILE_NAME_PATTERN = "yyyy-MM-dd_HH-mm-ss-SSS";
    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(FILE_NAME_PATTERN);
@@ -45,17 +46,12 @@ public class FileUploaderBean {
 
       try {
          serverSocket = new ServerSocket(Integer.parseInt(serverSocketPort));
-         new Thread(new Runnable() {
-            @Override
-            public void run() {
-               listenConnections();
-            }
-         }).start();
       } catch (IOException e) {
          LOGGER.error(e);
       }
    }
 
+   @Async
    public void listenConnections() {
       while (true) {
          try {
