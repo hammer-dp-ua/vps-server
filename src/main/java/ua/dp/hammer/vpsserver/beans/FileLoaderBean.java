@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import ua.dp.hammer.vpsserver.config.AppConfig;
 
-import javax.annotation.PostConstruct;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -29,8 +28,6 @@ public class FileLoaderBean {
    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(FILE_NAME_PATTERN);
    private static final int BUFFER_SIZE = 10 * 1024 * 1024;
 
-   private String fileExtension;
-   private String videoDirectory;
    private ServerSocket serverSocket;
 
    @Autowired
@@ -38,10 +35,10 @@ public class FileLoaderBean {
    @Autowired
    private AppConfig appConfig;
 
-   @PostConstruct
-   public void init() {
-      fileExtension = environment.getRequiredProperty("JAVA_VPS_SERVER_VIDEO_FILES_EXTENSION");
-      videoDirectory = appConfig.getVideoDirectory();
+   @Async
+   public void listenConnections() {
+      String fileExtension = environment.getRequiredProperty("JAVA_VPS_SERVER_VIDEO_FILES_EXTENSION");
+      String videoDirectory = appConfig.getVideoDirectory();
       String serverSocketPort = environment.getRequiredProperty("JAVA_VPS_SERVER_SOCKET_PORT");
 
       try {
@@ -49,10 +46,7 @@ public class FileLoaderBean {
       } catch (IOException e) {
          LOGGER.error(e);
       }
-   }
 
-   @Async
-   public void listenConnections() {
       while (true) {
          try {
             Socket clientSocket = serverSocket.accept();

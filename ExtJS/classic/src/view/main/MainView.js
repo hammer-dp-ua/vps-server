@@ -30,9 +30,9 @@ Ext.define('VPSServer.view.main.MainView', {
       reference: 'gridfiles'
    }, {
       region: 'west',
-      width: '30%'
+      width: '10%'
    }, {
       region: 'east',
-      width: '30%'
+      width: '10%'
    }]
 });
