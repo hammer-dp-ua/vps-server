@@ -25,7 +25,7 @@ public class AppConfig {
    @PostConstruct
    public void init() {
       videoDirectory = environment.getRequiredProperty("JAVA_VPS_SERVER_VIDEO_DIRECTORY");
-      fileLoaderBean.listenConnections();
+      //fileLoaderBean.listenConnections();
    }
 
    public String getVideoDirectory() {
