@@ -21,13 +21,14 @@ public class MultipartFileUploadController {
    private AppConfig appConfig;
 
    @RequestMapping(value = "/videoUpload", method = RequestMethod.POST)
-   public void handleVideoFileUpload(@RequestParam("file") MultipartFile file) {
+   public void handleVideoFileUpload(@RequestParam("name") String name,
+                                     @RequestParam("file") MultipartFile file) {
       if (!file.isEmpty()) {
          try {
-            LOGGER.info(file.getName() + " file is being uploaded");
-            File fileDestination = new File(appConfig.getVideoDirectory() + "/" + file.getName());
+            LOGGER.info(name + " file is being uploaded");
+            File fileDestination = new File(appConfig.getVideoDirectory() + "/" + name);
             file.transferTo(fileDestination);
-            LOGGER.info(file.getName() + " file has been uploaded. Size: " + (fileDestination.length() / 1024 / 1024) + "Mb");
+            LOGGER.info(name + " file has been uploaded. Size: " + (fileDestination.length() / 1024 / 1024) + "MB");
          } catch (IOException e) {
             LOGGER.error(e);
          }
