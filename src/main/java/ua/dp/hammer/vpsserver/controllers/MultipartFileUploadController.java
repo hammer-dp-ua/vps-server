@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ua.dp.hammer.vpsserver.config.AppConfig;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
@@ -25,9 +26,11 @@ public class MultipartFileUploadController {
 
    @RequestMapping(value = "/videoUpload", method = RequestMethod.POST)
    public void handleVideoFileUpload(@RequestParam("file") MultipartFile file,
+                                     HttpServletRequest httpServletRequest,
                                      HttpServletResponse httpServletResponse) {
       try {
-         LOGGER.info(file.getOriginalFilename() + " file is ready to be uploaded");
+         LOGGER.info(file.getOriginalFilename() + " file is ready to be uploaded. Remote address: " +
+               httpServletRequest.getRemoteAddr());
 
          File fileDestination = new File(appConfig.getVideoDirectory() + "/" + file.getOriginalFilename());
          file.transferTo(fileDestination);
@@ -43,15 +46,47 @@ public class MultipartFileUploadController {
    @RequestMapping(value = "/imagesUpload", method = RequestMethod.POST)
    public void handleImageFilesUpload(@RequestParam("videoFileName") String videoFileName,
                                       @RequestParam("file") List<MultipartFile> files,
-                                      HttpServletResponse httpServletResponse) throws IOException {
+                                      HttpServletRequest httpServletRequest,
+                                      HttpServletResponse httpServletResponse) {
       LOGGER.info("Received image files amount: " + files.size());
 
-      StringBuilder stringBuilder = new StringBuilder("File names: ");
+      StringBuilder fileNames = new StringBuilder("File names: ");
       for (MultipartFile file : files) {
-         stringBuilder.append(file.getOriginalFilename());
-         stringBuilder.append(";");
+         fileNames.append(file.getOriginalFilename());
+         fileNames.append(";");
       }
-      LOGGER.info(stringBuilder);
+      fileNames.deleteCharAt(fileNames.length() - 1);
+
+      LOGGER.info(fileNames + " files are ready to be uploaded. Remote address: " + httpServletRequest.getRemoteAddr());
+
+      int lastIndexOfDot = videoFileName.lastIndexOf('.');
+
+      if (lastIndexOfDot == -1) {
+         LOGGER.error("Video file name is without file extension: " + videoFileName);
+         httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+         return;
+      }
+
+      String videoFileNameWithoutExtension = videoFileName.substring(0, lastIndexOfDot);
+      File newDirectoryPath = new File(appConfig.getVideoDirectory() + File.separator + videoFileNameWithoutExtension);
+
+      if (!newDirectoryPath.mkdir()) {
+         LOGGER.error(newDirectoryPath.getPath() + " directory wasn't created");
+         httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+         return;
+      }
+
+      try {
+         for (MultipartFile file : files) {
+            file.transferTo(new File(newDirectoryPath + File.separator + file.getOriginalFilename()));
+            LOGGER.info(file.getOriginalFilename() + " file has been saved in " + newDirectoryPath.getPath());
+         }
+      } catch (IOException e) {
+         LOGGER.error("Files could not be saved in " + newDirectoryPath.getPath(), e);
+         httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+         return;
+      }
+
       httpServletResponse.setStatus(HttpServletResponse.SC_OK);
    }
 }
