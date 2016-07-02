@@ -61,8 +61,7 @@ public class VideoFilesManagerController {
          Files.walkFileTree(FileSystems.getDefault().getPath(videoDirectory), new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path filePath, BasicFileAttributes attrs) throws IOException {
-               if (LOGGER.isTraceEnabled())
-               {
+               if (LOGGER.isTraceEnabled()) {
                   File file = filePath.toFile();
                   LOGGER.trace("Found file: " + filePath + "; Size: " + (file.length() / 1024 / 1024) + "MB");
                }
@@ -81,8 +80,10 @@ public class VideoFilesManagerController {
    }
 
    @RequestMapping(path = "/files/{fileName:.+}", consumes = "application/json", method = RequestMethod.DELETE)
-   public void deleteFile(@PathVariable("fileName") final String fileName, HttpServletRequest httpServletRequest) {
-      LOGGER.info("Delete file request. File to be deleted: " + fileName + ". Remote address: " + httpServletRequest.getRemoteAddr());
+   public void deleteFile(@PathVariable("fileName") String fileName,
+                          HttpServletRequest httpServletRequest) {
+      LOGGER.info("Delete file request. File to be deleted: " + fileName + ". Remote address: " +
+            httpServletRequest.getRemoteAddr());
 
       if (fileName == null) {
          return;
@@ -92,15 +93,19 @@ public class VideoFilesManagerController {
 
       if (foundFile != null) {
          File file = foundFile.toFile();
-         if (file.delete())
-         {
+
+         if (file.delete()) {
             LOGGER.info("Deleted file: " + fileName);
+         } else {
+            LOGGER.error("Could not delete the file");
          }
       }
    }
 
    @RequestMapping(path = "/files/{fileName:.+}", method = RequestMethod.GET)
-   public void downloadFile(@PathVariable("fileName") final String fileName, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+   public void downloadFile(@PathVariable("fileName") String fileName,
+                            HttpServletRequest httpServletRequest,
+                            HttpServletResponse httpServletResponse) {
       LOGGER.info("Downloading file: " + fileName + ". Remote address: " + httpServletRequest.getRemoteAddr());
 
       Path foundFile = findFile(fileName);
@@ -110,7 +115,7 @@ public class VideoFilesManagerController {
       } else {
          try {
             int copiedBytes = StreamUtils.copy(Files.newInputStream(foundFile), httpServletResponse.getOutputStream());
-            LOGGER.info("Downloaded: " + (copiedBytes / 1024) + "KB");
+            LOGGER.info("Downloaded: " + (copiedBytes / 1024 / 1024) + "MB");
          } catch (IOException e) {
             LOGGER.error(e);
          }

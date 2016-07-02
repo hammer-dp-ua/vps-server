@@ -64,7 +64,7 @@ public class FileLoaderBean {
                   bufferedOutputStream.write(data);
                }
 
-               LOGGER.info("Added file size: " + (bytes / 1024) + "KB");
+               LOGGER.info("Added file size: " + (bytes / 1024 / 1024) + "MB");
             } catch (IOException e) {
                LOGGER.error(e);
             }
