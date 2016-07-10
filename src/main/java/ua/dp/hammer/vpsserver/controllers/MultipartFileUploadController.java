@@ -79,7 +79,10 @@ public class MultipartFileUploadController {
       try {
          for (MultipartFile file : files) {
             file.transferTo(new File(newDirectoryPath + File.separator + file.getOriginalFilename()));
-            LOGGER.info(file.getOriginalFilename() + " file has been saved in " + newDirectoryPath.getPath());
+
+            if (LOGGER.isDebugEnabled()) {
+               LOGGER.debug(file.getOriginalFilename() + " file has been saved in " + newDirectoryPath.getPath());
+            }
          }
       } catch (IOException e) {
          LOGGER.error("Files could not be saved in " + newDirectoryPath.getPath(), e);
