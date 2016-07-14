@@ -32,6 +32,7 @@ public class FileLoaderBean {
 
    @Autowired
    private Environment environment;
+
    @Autowired
    private AppConfig appConfig;
 
