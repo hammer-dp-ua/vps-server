@@ -5,7 +5,7 @@ Ext.define('VPSServer.view.fileslist.FilesView', {
       'VPSServer.model.FileModel',
       'VPSServer.view.fileslist.FilesViewModel',
       'VPSServer.view.fileslist.FilesController',
-      'VPSServer.store.FilesStore'
+      'VPSServer.store.VideoFilesStore'
    ],
    controller: 'files',
    viewModel: {
@@ -15,7 +15,7 @@ Ext.define('VPSServer.view.fileslist.FilesView', {
       store: '{viewModelFilesStore}'
    },*/
    store: {
-      type: 'filesStore'
+      type: 'videoFilesStore'
    },
    reference: 'filesView', // This config uses the reference to determine the name of the data object to place in the ViewModel
 
@@ -29,11 +29,23 @@ Ext.define('VPSServer.view.fileslist.FilesView', {
          sortable: true,
          width: '35%',
          renderer: function (value) {
-            return '<a href="' + VPSServer.view.main.MainController.FILES_URI + value + '" target="_blank">' + value + '</a>';
+            return '<a href="' + VPSServer.view.main.MainController.VIDEO_FILES_URI + value + '" target="_blank">' + value + '</a>';
          }
       },
       {text: "Creation date", dataIndex: "creationDate", sortable: true, width: '35%'},
       {text: "Size, MB", dataIndex: "size", sortable: true, width: '19%'},
+      {
+         test: "Images",
+         sortable: false,
+         xtype: 'actioncolumn',
+         align: 'center',
+         width: '5%',
+         items: [{
+            iconCls: 'pictos pictos-photos2',
+            tooltip: 'View images',
+            handler: 'onClickOpenImagesPreview'
+         }]
+      },
       {
          menuDisabled: true,
          sortable: false,

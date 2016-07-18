@@ -7,7 +7,7 @@ Ext.define('VPSServer.view.fileslist.FilesController', {
 
    onAfterRender: function() {
       //this.getViewModel().getStore('viewModelFilesStore').load();
-      this.getView().getStore('filesStore').load();
+      this.getView().getStore('videoFilesStore').load();
    },
 
    onClickDelete: function(grid, rowIndex, colIndex) {
@@ -19,6 +19,13 @@ Ext.define('VPSServer.view.fileslist.FilesController', {
       var store = grid.getStore();
       var fileName = store.getAt(rowIndex).get('name');
 
-      window.open(VPSServer.view.main.MainController.FILES_URI + fileName);
+      window.open(VPSServer.view.main.MainController.VIDEO_FILES_URI + fileName);
+   },
+
+   onClickOpenImagesPreview: function(grid, rowIndex, colIndex) {
+      var store = grid.getStore();
+      var fileName = store.getAt(rowIndex).get('name');
+
+
    }
 });
