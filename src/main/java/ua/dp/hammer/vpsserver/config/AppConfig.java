@@ -14,6 +14,7 @@ import javax.annotation.PostConstruct;
 @EnableAsync
 public class AppConfig {
 
+   public static final String VIDEO_DIRECTORY_ENV_VARIABLE = "JAVA_VPS_SERVER_VIDEO_DIRECTORY";
    private String videoDirectory;
 
    @Autowired
@@ -24,7 +25,7 @@ public class AppConfig {
 
    @PostConstruct
    public void init() {
-      videoDirectory = environment.getRequiredProperty("JAVA_VPS_SERVER_VIDEO_DIRECTORY");
+      videoDirectory = environment.getRequiredProperty(VIDEO_DIRECTORY_ENV_VARIABLE);
       //fileLoaderBean.listenConnections();
    }
 
