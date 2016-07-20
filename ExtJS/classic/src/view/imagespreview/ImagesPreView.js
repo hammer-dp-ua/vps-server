@@ -7,6 +7,7 @@ Ext.define('VPSServer.view.imagespreview.ImagesPreView', {
 
    alias: 'widget.imagespreview',
    title: '',
+   reference: 'imagesPreView',
 
    items: Ext.create('Ext.view.View', {
       store: {
@@ -28,18 +29,6 @@ Ext.define('VPSServer.view.imagespreview.ImagesPreView', {
       overItemCls: 'x-item-over',
       itemSelector: 'div.thumb-wrap',
       emptyText: 'No images to display',
-      plugins: [
-         Ext.create('Ext.ux.DataView.DragSelector', {}),
-         Ext.create('Ext.ux.DataView.LabelEditor', {dataIndex: 'name'})
-      ],
-      prepareData: function (data) {
-         Ext.apply(data, {
-            shortName: Ext.util.Format.ellipsis(data.name, 15),
-            sizeString: Ext.util.Format.fileSize(data.size),
-            dateString: Ext.util.Format.date(data.lastmod, "m/d/Y g:i a")
-         });
-         return data;
-      },
       listeners: {
          selectionchange: function (dv, nodes) {
             var l = nodes.length,

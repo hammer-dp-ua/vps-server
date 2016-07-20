@@ -26,6 +26,7 @@ Ext.define('VPSServer.view.fileslist.FilesController', {
       var store = grid.getStore();
       var fileName = store.getAt(rowIndex).get('name');
 
-
+      this.getView().hide();
+      this.lookupReference('imagesPreView').show();
    }
 });

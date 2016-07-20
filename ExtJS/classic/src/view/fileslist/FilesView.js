@@ -5,7 +5,8 @@ Ext.define('VPSServer.view.fileslist.FilesView', {
       'VPSServer.model.FileModel',
       'VPSServer.view.fileslist.FilesViewModel',
       'VPSServer.view.fileslist.FilesController',
-      'VPSServer.store.VideoFilesStore'
+      'VPSServer.store.VideoFilesStore',
+      'VPSServer.view.imagespreview.ImagesPreView'
    ],
    controller: 'files',
    viewModel: {
