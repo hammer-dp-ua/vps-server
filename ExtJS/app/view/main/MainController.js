@@ -17,11 +17,16 @@ Ext.define('VPSServer.view.main.MainController', {
          this.lookupReference('gridfiles').show();
       }
 
-      Ext.on('successfulLogin', this.successfulLogin, this)
+      Ext.on('successfulLogin', this.successfulLogin, this);
+      Ext.on('displayImageFiles', this.displayImageFiles, this);
    },
 
    successfulLogin: function() {
       this.lookupReference('formlogin').hide();
       this.lookupReference('gridfiles').show();
+   },
+
+   displayImageFiles: function() {
+      this.lookupReference('imagespreview').show();
    }
 });

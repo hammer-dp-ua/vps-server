@@ -6,8 +6,9 @@ Ext.define('VPSServer.view.imagespreview.ImagesPreView', {
    ],
 
    alias: 'widget.imagespreview',
-   title: '',
+   title: 'Image files',
    reference: 'imagesPreView',
+   closable: true,
 
    items: Ext.create('Ext.view.View', {
       store: {
@@ -21,7 +22,7 @@ Ext.define('VPSServer.view.imagespreview.ImagesPreView', {
                '<span class="">{shortName:htmlEncode}</span>',
             '</div>',
          '</tpl>',
-         '<div class="x-clear"></div>'
+         '<div class=""></div>'
       ],
       multiSelect: true,
       height: 310,

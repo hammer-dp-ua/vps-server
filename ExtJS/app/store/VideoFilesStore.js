@@ -7,7 +7,8 @@ Ext.define('VPSServer.store.VideoFilesStore', {
    autoSync: true,
    proxy: {
       type: 'rest',
-      url: VPSServer.view.main.MainController.VIDEO_FILES_URI,
+      url: Ext.util.Cookies.get(VPSServer.Application.MOCKS_COOKIE) ? 'mocks/videoFiles.json' :
+         VPSServer.view.main.MainController.VIDEO_FILES_URI,
       reader: {
          type : 'json'
       }

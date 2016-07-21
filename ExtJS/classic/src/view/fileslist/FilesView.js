@@ -5,8 +5,7 @@ Ext.define('VPSServer.view.fileslist.FilesView', {
       'VPSServer.model.FileModel',
       'VPSServer.view.fileslist.FilesViewModel',
       'VPSServer.view.fileslist.FilesController',
-      'VPSServer.store.VideoFilesStore',
-      'VPSServer.view.imagespreview.ImagesPreView'
+      'VPSServer.store.VideoFilesStore'
    ],
    controller: 'files',
    viewModel: {
@@ -33,16 +32,17 @@ Ext.define('VPSServer.view.fileslist.FilesView', {
             return '<a href="' + VPSServer.view.main.MainController.VIDEO_FILES_URI + value + '" target="_blank">' + value + '</a>';
          }
       },
-      {text: "Creation date", dataIndex: "creationDate", sortable: true, width: '35%'},
+      {text: "Creation date", dataIndex: "creationDate", sortable: true, width: '30%'},
       {text: "Size, MB", dataIndex: "size", sortable: true, width: '19%'},
       {
+         menuDisabled: true,
          test: "Images",
          sortable: false,
          xtype: 'actioncolumn',
          align: 'center',
          width: '5%',
          items: [{
-            iconCls: 'pictos pictos-photos2',
+            iconCls: 'pictos pictos-photos',
             tooltip: 'View images',
             handler: 'onClickOpenImagesPreview'
          }]
