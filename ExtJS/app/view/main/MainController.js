@@ -17,8 +17,8 @@ Ext.define('VPSServer.view.main.MainController', {
          this.lookupReference('gridfiles').show();
       }
 
-      Ext.on('successfulLogin', this.successfulLogin, this);
-      Ext.on('displayImageFiles', this.displayImageFiles, this);
+      Ext.GlobalEvents.on('successfulLogin', this.successfulLogin, this);
+      Ext.GlobalEvents.on('displayImageFiles', this.displayImageFiles, this);
    },
 
    successfulLogin: function() {
@@ -26,7 +26,7 @@ Ext.define('VPSServer.view.main.MainController', {
       this.lookupReference('gridfiles').show();
    },
 
-   displayImageFiles: function() {
-      this.lookupReference('imagespreview').show();
+   displayImageFiles: function(invokedView, videoFileName) {
+      this.lookupReference('imagesPreView').show(invokedView, videoFileName);
    }
 });

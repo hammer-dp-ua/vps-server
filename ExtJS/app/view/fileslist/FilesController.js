@@ -27,6 +27,6 @@ Ext.define('VPSServer.view.fileslist.FilesController', {
       var fileName = store.getAt(rowIndex).get('name');
 
       this.getView().hide();
-      Ext.GlobalEvents.fireEventArgs('displayImageFiles');
+      Ext.GlobalEvents.fireEventArgs('displayImageFiles', [this.getView(), fileName]);
    }
 });
