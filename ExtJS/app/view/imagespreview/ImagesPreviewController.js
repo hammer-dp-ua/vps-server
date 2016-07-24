@@ -6,7 +6,7 @@ Ext.define('VPSServer.view.imagespreview.ImagesPreviewController', {
       invokedView: null
    },
 
-   loadAndUpdateData: function(invokedView, videoFileName, executeOnLoad) {
+   loadAndUpdateData: function(invokedView, videoFileName) {
       if (!invokedView) {
          throw error("Invoked view is not specified");
       }
@@ -24,6 +24,9 @@ Ext.define('VPSServer.view.imagespreview.ImagesPreviewController', {
 
          }
       }, videoFileName);
+      /*if (typeof executeOnLoad === 'function') {
+         executeOnLoad.exec();
+      }*/
       //view.items.items[0].update(store.getData());
    }
 });

@@ -4,7 +4,7 @@ Ext.define('VPSServer.store.ImageFilesStore', {
    alias: 'store.imageFilesStore',
    model: 'VPSServer.model.FileModel',
 
-   autoSync: false,
+   autoSync: true,
    proxy: {
       type: 'rest',
       url: '123',

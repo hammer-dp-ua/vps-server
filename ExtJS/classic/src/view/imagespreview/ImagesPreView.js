@@ -10,14 +10,14 @@ Ext.define('VPSServer.view.imagespreview.ImagesPreView', {
    viewModel: {
       type: 'imagespreview'
    },
-   /*store: {
-      type: 'imageFilesStore'
-   },*/
    controller: 'imagespreview',
 
    alias: 'widget.imagespreview',
    reference: 'imagesPreView',
    closable: true,
+   scrollable: true,
+   frame: true,
+   //collapsible: true,
 
    items: Ext.create('Ext.view.View', {
       bind: {
@@ -26,13 +26,14 @@ Ext.define('VPSServer.view.imagespreview.ImagesPreView', {
 
       tpl: [
          '<tpl for=".">',
-            '<div class="" id="{name:stripTags}">',
-               '<div class=""><img src="{name}" title="{name:htmlEncode}"></div>',
-               '<span class="">{shortName:htmlEncode}</span>',
+            '<div class="preview-image-block" id="{name:stripTags}">',
+               '<div class=""><img class="preview-image" src="{uri}" title="{name:htmlEncode}"></div>',
+               '<span class="preview-image-name">{name:htmlEncode}</span>',
             '</div>',
          '</tpl>',
          '<div class=""></div>'
       ],
+
       multiSelect: false,
       trackOver: true,
       overItemCls: 'x-item-over',
@@ -42,7 +43,7 @@ Ext.define('VPSServer.view.imagespreview.ImagesPreView', {
 
    show: function(invokedView, videoFileName) {
       this.setTitle(videoFileName);
-      this.getController().loadAndUpdateData(invokedView, videoFileName,
-         this.callParent); // Call the superclass "show" method
+      this.getController().loadAndUpdateData(invokedView, videoFileName);
+      this.callParent(); // Call the superclass "show" method
    }
 });

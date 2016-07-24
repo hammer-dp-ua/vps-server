@@ -1,3 +1,18 @@
 /*
  * This is is imported by virtue of "sass.etc" in "app.json".
  */
+$preview-image-width: 300px;
+
+.preview-image-block {
+   float: left;
+
+   .preview-image {
+      width : $preview-image-width;
+
+   }
+
+   .preview-image-name {
+      text-align: center;
+      display: block;
+   }
+}
