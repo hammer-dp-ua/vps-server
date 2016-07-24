@@ -1,4 +1,4 @@
-Ext.define('VPSServer.view.fileslist.FilesController', {
+Ext.define('VPSServer.view.fileslist.VideoFilesController', {
    extend: 'Ext.app.ViewController',
    alias: 'controller.files',
 

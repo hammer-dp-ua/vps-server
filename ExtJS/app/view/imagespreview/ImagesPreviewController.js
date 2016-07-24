@@ -3,7 +3,27 @@ Ext.define('VPSServer.view.imagespreview.ImagesPreviewController', {
    alias: 'controller.imagespreview',
 
    config: {
-      invokedView: null,
-      videoFileName: null
+      invokedView: null
+   },
+
+   loadAndUpdateData: function(invokedView, videoFileName, executeOnLoad) {
+      if (!invokedView) {
+         throw error("Invoked view is not specified");
+      }
+      if (!videoFileName) {
+         throw error("Video file name is not specified");
+      }
+
+      this.setInvokedView(invokedView);
+
+      var view = this.getView();
+      var store = view.getViewModel().getStore('images');
+      store.load({
+         scope: this,
+         callback: function(records, operation, success) {
+
+         }
+      }, videoFileName);
+      //view.items.items[0].update(store.getData());
    }
 });

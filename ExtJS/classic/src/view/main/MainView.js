@@ -5,7 +5,7 @@ Ext.define('VPSServer.view.main.MainView', {
       'Ext.plugin.Viewport',
       'VPSServer.view.main.MainController',
       'VPSServer.view.login.LoginView',
-      'VPSServer.view.fileslist.FilesView',
+      'VPSServer.view.fileslist.VideoFilesView',
       'VPSServer.view.imagespreview.ImagesPreView'
    ],
    views: ['formlogin', 'gridfiles', 'imagespreview'],

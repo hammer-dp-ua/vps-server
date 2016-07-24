@@ -8,7 +8,11 @@ Ext.define('VPSServer.model.FileModel', {
          name: 'size',
          type: 'int',
          convert: function (val) {
-            return parseFloat(val / 1024 / 1024).toFixed(2);
+            if (val) {
+               return parseFloat(val / 1024 / 1024).toFixed(2);
+            } else {
+               return 0;
+            }
          }
       }
    ],

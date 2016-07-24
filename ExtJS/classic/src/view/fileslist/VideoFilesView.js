@@ -1,10 +1,9 @@
-Ext.define('VPSServer.view.fileslist.FilesView', {
+Ext.define('VPSServer.view.fileslist.VideoFilesView', {
    extend: 'Ext.grid.Panel',
 
    requires: [
-      'VPSServer.model.FileModel',
-      'VPSServer.view.fileslist.FilesViewModel',
-      'VPSServer.view.fileslist.FilesController',
+      'VPSServer.view.fileslist.VideoFilesViewModel',
+      'VPSServer.view.fileslist.VideoFilesController',
       'VPSServer.store.VideoFilesStore'
    ],
    controller: 'files',
