@@ -3,6 +3,7 @@ Ext.define('VPSServer.view.imagespreview.ImagesPreView', {
 
    requires: [
       'VPSServer.view.imagespreview.ImagesPreviewController',
+      'VPSServer.view.fullscreenimage.ImageView',
       'VPSServer.model.FileModel',
       'VPSServer.store.ImageFilesStore'
    ],
@@ -35,15 +36,23 @@ Ext.define('VPSServer.view.imagespreview.ImagesPreView', {
       ],
 
       multiSelect: false,
-      trackOver: true,
-      overItemCls: 'x-item-over',
-      itemSelector: 'div.thumb-wrap',
-      emptyText: 'No images to display'
+      overItemCls: 'preview-image-block-over',
+      itemSelector: 'div.preview-image-block', // required
+
+      listeners: {
+         selectionchange: function(dv, nodes) {
+            this.up('panel').getController().openImage();
+         }
+      }
    }),
 
    show: function(invokedView, videoFileName) {
       this.setTitle(videoFileName);
       this.getController().loadAndUpdateData(invokedView, videoFileName);
       this.callParent(); // Call the superclass "show" method
+   },
+
+   listeners: {
+      close: 'onClose'
    }
 });
