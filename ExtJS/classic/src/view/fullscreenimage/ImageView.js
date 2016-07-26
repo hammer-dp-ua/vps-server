@@ -3,17 +3,29 @@ Ext.define('VPSServer.view.fullscreenimage.ImageView', {
 
    layout: 'fit',
    modal: true,
-   width: 500,
-   height: 500,
+   width: '100%',
+   height: '100%',
    closeToolText: null,
 
-   html: '<img class="" src="mocks/video_file_name/001.jpeg">',
+   style: {
+      'background-position': 'center',
+      'background-repeat': 'no-repeat',
+      'background-size': 'contain',
+      'background-image': 'url("mocks/video_file_name/001.jpeg")'
+   },
 
    items: [{
       xtype: 'button',
-      text: '<'
+      text: '<',
+      cls: 'button-prev-image',
+      focusCls: '',
+      style: {
+         'background-color': ''
+      }
    }, {
       xtype: 'button',
-      text: '>'
+      text: '>',
+      cls: 'button-next-image',
+      focusCls: ''
    }]
 });

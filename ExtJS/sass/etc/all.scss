@@ -2,17 +2,73 @@
  * This is is imported by virtue of "sass.etc" in "app.json".
  */
 $preview-image-width: 300px;
+$preview-image-block-margin: 4px;
+$preview-image-block-padding: 5px;
+
+$preview-image-block-over-border-width: 1px;
+$preview-image-block-over-border-color: #dddddd;
+$preview-image-block-over-background-color: #efefef;
+$preview-image-block-over-padding: 4px;
+
+$image-navigation-button-width: 40px !important;
+$image-navigation-button-background-color: initial;
+$image-navigation-button-border-style: none !important;
+$image-navigation-button-font-size: 50px !important;
 
 .preview-image-block {
    float: left;
+   margin: $preview-image-block-margin;
+   margin-right: 0;
+   padding: $preview-image-block-padding;
 
    .preview-image {
       width : $preview-image-width;
-
    }
 
    .preview-image-name {
       text-align: center;
       display: block;
+      font-weight: bold;
    }
+}
+
+.preview-image-block-over {
+   border: $preview-image-block-over-border-width solid $preview-image-block-over-border-color;
+   background: $preview-image-block-over-background-color;
+   padding: $preview-image-block-over-padding;
+}
+
+.button-prev-image, .button-next-image {
+   width: $image-navigation-button-width;
+   border-style: $image-navigation-button-border-style;
+   display: block !important;
+   position: absolute !important;
+
+   .x-btn-inner {
+      font-weight: bold !important;
+      font-size: $image-navigation-button-font-size;
+      line-height: $image-navigation-button-font-size;
+      color: black !important;
+      padding: initial;
+      font-family: monospace !important;
+   }
+}
+
+.button-prev-image.x-btn-default-small, .button-next-image.x-btn-default-small {
+   background-color: $image-navigation-button-background-color;
+}
+
+.button-prev-image {
+   left: 0 !important;
+}
+
+.button-next-image {
+   right: 0 !important;
+   left: initial !important;
+}
+
+.full-screen-image {
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: contain;
 }
