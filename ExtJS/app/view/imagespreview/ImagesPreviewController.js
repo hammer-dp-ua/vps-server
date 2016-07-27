@@ -35,8 +35,10 @@ Ext.define('VPSServer.view.imagespreview.ImagesPreviewController', {
       this.getInvokedView().show();
    },
 
-   openImage: function() {
+   openImage: function(imageName) {
       var window = Ext.create('VPSServer.view.fullscreenimage.ImageView');
+      window.setImagesStore(this.getView().getViewModel().getStore('images'));
+      window.setImageName(imageName);
       window.show();
    }
 });

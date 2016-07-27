@@ -41,7 +41,7 @@ Ext.define('VPSServer.view.imagespreview.ImagesPreView', {
 
       listeners: {
          selectionchange: function(dv, nodes) {
-            this.up('panel').getController().openImage();
+            this.up('panel').getController().openImage(nodes[0].id);
          }
       }
    }),
