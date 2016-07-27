@@ -12,6 +12,7 @@ Ext.define('VPSServer.view.fullscreenimage.ImageView', {
    width: '100%',
    height: '100%',
    closeToolText: null,
+   draggable: false,
 
    config: {
       imagesStore: null

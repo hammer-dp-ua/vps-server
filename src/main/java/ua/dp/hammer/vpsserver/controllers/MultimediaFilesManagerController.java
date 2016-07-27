@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ua.dp.hammer.vpsserver.config.AppConfig;
-import ua.dp.hammer.vpsserver.models.VideoFile;
+import ua.dp.hammer.vpsserver.models.MultimediaFile;
+import ua.dp.hammer.vpsserver.models.Picture;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -31,19 +32,26 @@ public class MultimediaFilesManagerController {
 
    String videoFilesExtension;
 
-   private static final Comparator<VideoFile> VIDEO_FILES_COMPARATOR_ASC = new Comparator<VideoFile>() {
+   private static final Comparator<MultimediaFile> VIDEO_FILES_COMPARATOR_ASC = new Comparator<MultimediaFile>() {
       @Override
-      public int compare(VideoFile file1, VideoFile file2) {
+      public int compare(MultimediaFile file1, MultimediaFile file2) {
          long diff = file1.getCreationDate().getTime() - file2.getCreationDate().getTime();
          return (diff == 0) ? 0 : (diff > 0 ? 1 : -1);
       }
    };
 
-   private static final Comparator<VideoFile> VIDEO_FILES_COMPARATOR_DESC = new Comparator<VideoFile>() {
+   private static final Comparator<MultimediaFile> VIDEO_FILES_COMPARATOR_DESC = new Comparator<MultimediaFile>() {
       @Override
-      public int compare(VideoFile file1, VideoFile file2) {
+      public int compare(MultimediaFile file1, MultimediaFile file2) {
          long diff = file1.getCreationDate().getTime() - file2.getCreationDate().getTime();
          return (diff == 0) ? 0 : (diff > 0 ? -1 : 1);
+      }
+   };
+
+   static final Comparator<Picture> IMAGE_FILES_COMPARATOR_ASC = new Comparator<Picture>() {
+      @Override
+      public int compare(Picture picture1, Picture picture2) {
+         return picture1.getName().compareTo(picture2.getName());
       }
    };
 
@@ -59,8 +67,8 @@ public class MultimediaFilesManagerController {
    }
 
    @RequestMapping(path = "/videoFiles", produces = "application/json", method = RequestMethod.GET)
-   public SortedSet<VideoFile> getVideoFiles(HttpServletRequest httpServletRequest) {
-      final SortedSet<VideoFile> videoFiles = new TreeSet<>(VIDEO_FILES_COMPARATOR_DESC);
+   public SortedSet<MultimediaFile> getVideoFiles(HttpServletRequest httpServletRequest) {
+      final SortedSet<MultimediaFile> videoFiles = new TreeSet<>(VIDEO_FILES_COMPARATOR_DESC);
 
       LOGGER.info("Get video files request. Remote address: " + httpServletRequest.getRemoteAddr());
 
@@ -75,7 +83,7 @@ public class MultimediaFilesManagerController {
                   }
 
                   File foundFile = filePath.toFile();
-                  videoFiles.add(new VideoFile(foundFile.getName(), new Date(foundFile.lastModified()), foundFile.length()));
+                  videoFiles.add(new MultimediaFile(foundFile.getName(), new Date(foundFile.lastModified()), foundFile.length()));
                }
                return FileVisitResult.CONTINUE;
             }
@@ -131,14 +139,14 @@ public class MultimediaFilesManagerController {
    }
 
    @RequestMapping(path = "/imageFiles/{videoFileName:.+}", produces = "application/json", method = RequestMethod.GET)
-   public SortedSet<String> getImageFiles(@PathVariable("videoFileName") String videoFileName,
-                                    HttpServletRequest httpServletRequest,
-                                    HttpServletResponse httpServletResponse) {
+   public SortedSet<Picture> getImageFiles(@PathVariable("videoFileName") final String videoFileName,
+                                           HttpServletRequest httpServletRequest,
+                                           HttpServletResponse httpServletResponse) {
       LOGGER.info("Get image files request. Remote address: " + httpServletRequest.getRemoteAddr());
 
       final String imagesDirName = videoFileName.replace(videoFilesExtension, "");
       Path imagesDir = FileSystems.getDefault().getPath(videoDirectory + File.separator + imagesDirName);
-      final SortedSet<String> imageFiles = new TreeSet<>();
+      final SortedSet<Picture> imageFiles = new TreeSet<>(IMAGE_FILES_COMPARATOR_ASC);
 
       try {
          Files.walkFileTree(imagesDir, new SimpleFileVisitor<Path>() {
@@ -149,7 +157,7 @@ public class MultimediaFilesManagerController {
                   LOGGER.debug("Found file: " + filePath + "; Size: " + (file.length() / 1024) + "KB");
                }
 
-               imageFiles.add(filePath.getFileName().toString());
+               imageFiles.add(new Picture(filePath.getFileName().toString(), videoFileName));
                return FileVisitResult.CONTINUE;
             }
          });

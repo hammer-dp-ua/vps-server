@@ -16,6 +16,7 @@ Ext.define('VPSServer.view.imagespreview.ImagesPreView', {
    alias: 'widget.imagespreview',
    reference: 'imagesPreView',
    closable: true,
+   closeAction: 'hide',
    scrollable: true,
    frame: true,
    //collapsible: true,
