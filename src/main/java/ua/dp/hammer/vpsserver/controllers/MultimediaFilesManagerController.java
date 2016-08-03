@@ -30,7 +30,7 @@ public class MultimediaFilesManagerController {
    @Autowired
    private Environment environment;
 
-   String videoFilesExtension;
+   private String videoFilesExtension;
 
    private static final Comparator<MultimediaFile> VIDEO_FILES_COMPARATOR_ASC = new Comparator<MultimediaFile>() {
       @Override
@@ -95,8 +95,8 @@ public class MultimediaFilesManagerController {
    }
 
    @RequestMapping(path = "/videoFiles/{fileName:.+}", consumes = "application/json", method = RequestMethod.DELETE)
-   public void deleteFile(@PathVariable("fileName") String fileName,
-                          HttpServletRequest httpServletRequest) {
+   public void deleteVideoFile(@PathVariable("fileName") String fileName,
+                               HttpServletRequest httpServletRequest) {
       LOGGER.info("Delete video file request. File to be deleted: " + fileName + ". Remote address: " +
             httpServletRequest.getRemoteAddr());
 
@@ -110,11 +110,13 @@ public class MultimediaFilesManagerController {
          File file = foundFile.toFile();
 
          if (file.delete()) {
-            LOGGER.info("Deleted file: " + fileName);
+            LOGGER.info("Deleted video file: " + fileName);
          } else {
-            LOGGER.error("Could not delete the file");
+            LOGGER.error("Could not delete video file: " + fileName);
          }
       }
+
+      deleteImageFiles(getImagesDirPath(fileName));
    }
 
    @RequestMapping(path = "/videoFiles/{fileName:.+}", method = RequestMethod.GET)
@@ -143,9 +145,7 @@ public class MultimediaFilesManagerController {
                                            HttpServletRequest httpServletRequest,
                                            HttpServletResponse httpServletResponse) {
       LOGGER.info("Get image files request. Remote address: " + httpServletRequest.getRemoteAddr());
-
-      final String imagesDirName = videoFileName.replace(videoFilesExtension, "");
-      Path imagesDir = FileSystems.getDefault().getPath(videoDirectory + File.separator + imagesDirName);
+      Path imagesDir = getImagesDirPath(videoFileName);
       final SortedSet<Picture> imageFiles = new TreeSet<>(IMAGE_FILES_COMPARATOR_ASC);
 
       try {
@@ -191,5 +191,50 @@ public class MultimediaFilesManagerController {
          LOGGER.error(e);
       }
       return foundFile.size() == 0 ? null : foundFile.get(0);
+   }
+
+   private void deleteImageFiles(Path imagesDir) {
+      Set<File> filesToBeDeleted = findImageFiles(imagesDir);
+      boolean allFilesWereDeleted = true;
+
+      for (File file : filesToBeDeleted) {
+         if (!file.delete()) {
+            allFilesWereDeleted = false;
+            LOGGER.error("Could not delete image file: " + file);
+         }
+      }
+
+      if (allFilesWereDeleted) {
+         if (!imagesDir.toFile().delete()) {
+            LOGGER.error("Could not delete images directory: " + imagesDir);
+         }
+         LOGGER.info(filesToBeDeleted.size() + " image files were deleted");
+      }
+   }
+
+   private Set<File> findImageFiles(Path dirPath) {
+      if (dirPath == null || !dirPath.toFile().isDirectory()) {
+         throw new IllegalArgumentException("Parameter is not a directory: " + dirPath);
+      }
+
+      final Set<File> foundFiles = new HashSet<>();
+
+      try {
+         Files.walkFileTree(dirPath, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(Path filePath, BasicFileAttributes attrs) throws IOException {
+               foundFiles.add(filePath.toFile());
+               return FileVisitResult.CONTINUE;
+            }
+         });
+      } catch (IOException e) {
+         LOGGER.error(e);
+      }
+      return foundFiles;
+   }
+
+   private Path getImagesDirPath(String videoFileName) {
+      final String imagesDirName = videoFileName.replace(videoFilesExtension, "");
+      return FileSystems.getDefault().getPath(videoDirectory + File.separator + imagesDirName);
    }
 }
