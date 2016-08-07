@@ -14,8 +14,8 @@ Ext.define('VPSServer.store.ImageFilesStore', {
    },
 
    load: function(origParameter, videoFileName) {
-      this.proxy.url = Ext.util.Cookies.get(VPSServer.Application.MOCKS_COOKIE) ? 'mocks/' + videoFileName + '/imageFiles.json' :
-            VPSServer.view.main.MainController.IMAGE_FILES_URI + videoFileName;
+      this.proxy.url = Ext.util.Cookies.get(VPSServer.Application.MOCKS_COOKIE) ? 'mocks/' + videoFileName.replace(".ts", "") + '/imageFiles.json' :
+            VPSServer.view.main.MainController.IMAGE_FILES_URI + videoFileName.replace(".ts", "");
       this.callParent(origParameter);
    }
 });
