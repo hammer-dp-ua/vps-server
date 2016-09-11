@@ -1,16 +1,21 @@
 package ua.dp.hammer.vpsserver.models;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MultimediaFile {
 
+   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
    private String name;
-   private Date creationDate;
+   private Date creationDateOrig;
+   private String creationDate;
    private long size;
 
-   public MultimediaFile(String name, Date creationDate, long size) {
+   public MultimediaFile(String name, Date creationDateOrig, long size) {
       this.name = name;
-      this.creationDate = creationDate;
+      this.creationDateOrig = creationDateOrig;
+      this.creationDate = dateFormat.format(creationDateOrig);
       this.size = size;
    }
 
@@ -18,7 +23,11 @@ public class MultimediaFile {
       return name;
    }
 
-   public Date getCreationDate() {
+   public Date getCreationDateOrig() {
+      return creationDateOrig;
+   }
+
+   public String getCreationDate() {
       return creationDate;
    }
 
@@ -33,11 +42,11 @@ public class MultimediaFile {
       }
 
       MultimediaFile thatFile = (MultimediaFile) o;
-      return creationDate != null && creationDate.equals(thatFile.getCreationDate());
+      return creationDateOrig != null && creationDateOrig.equals(thatFile.getCreationDateOrig());
    }
 
    @Override
    public int hashCode() {
-      return creationDate != null ? creationDate.hashCode() : -1;
+      return creationDateOrig != null ? creationDateOrig.hashCode() : -1;
    }
 }

@@ -1,6 +1,8 @@
 [
-	{"name": "1.ts", "creationDate": "2016", "size": 106954752},
-	{"name": "2.ts", "creationDate": "2016", "size": 101711872},
-	{"name": "3.ts", "creationDate": "2016", "size": 102760448},
-	{"name": "video_file_name.ts", "creationDate": "2016", "size": 103809024}
+  {"name": "1.ts", "creationDate": "10-01-2016 00:00:01", "size": 106954752},
+  {"name": "2.ts", "creationDate": "09-02-2016 23:59:01", "size": 101711872},
+  {"name": "3.ts", "creationDate": "30-01-2016 23:59:01", "size": 102760448},
+  {"name": "4.ts", "creationDate": "20-01-2016 23:59:01", "size": 456400654},
+  {"name": "5.ts", "creationDate": "20-12-2016 23:59:01", "size": 854788961},
+  {"name": "video_file_name.ts", "creationDate": "20-12-2016 23:59:02", "size": 103809024}
 ]

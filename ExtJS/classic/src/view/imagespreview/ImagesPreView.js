@@ -41,8 +41,8 @@ Ext.define('VPSServer.view.imagespreview.ImagesPreView', {
       itemSelector: 'div.preview-image-block', // required
 
       listeners: {
-         selectionchange: function(dv, nodes) {
-            this.up('panel').getController().openImage(nodes[0].id);
+         itemclick: function(a, record , item , index , e , eOpts) {
+            this.up('panel').getController().openImage(item.id);
          }
       }
    }),

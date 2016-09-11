@@ -45,8 +45,22 @@ Ext.define('VPSServer.view.fileslist.VideoFilesView', {
             VPSServer.view.main.MainController.IMAGE_FILES_EXTENSION + '" class="first-image-preview" action="openImagesPreview">';
       }
       },
-      {text: "Creation date", dataIndex: "creationDate", sortable: true, width: '48%'},
-      {text: "Size, MB", dataIndex: "size", sortable: true, width: '15%'},
+      {
+         text: "Creation date",
+         dataIndex: "creationDate",
+         xtype: 'datecolumn',
+         format: 'd-m-Y H:i:s',
+         sortable: true,
+         tdCls: 'vertical-alignment',
+         width: '48%'
+      },
+      {
+         text: "Size, MB",
+         dataIndex: "size",
+         sortable: true,
+         tdCls: 'vertical-alignment',
+         width: '15%'
+      },
       /*{
          menuDisabled: true,
          test: "Images",
@@ -66,6 +80,7 @@ Ext.define('VPSServer.view.fileslist.VideoFilesView', {
          xtype: 'actioncolumn',
          align: 'center',
          width: '5%',
+         tdCls: 'vertical-alignment',
          items: [{
             iconCls: 'pictos pictos-download',
             tooltip: 'Download',
@@ -78,6 +93,7 @@ Ext.define('VPSServer.view.fileslist.VideoFilesView', {
          xtype: 'actioncolumn',
          align: 'center',
          width: '5%',
+         tdCls: 'vertical-alignment',
          items: [{
             iconCls: 'pictos pictos-delete_black1',
             tooltip: 'Delete',

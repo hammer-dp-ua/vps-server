@@ -35,7 +35,7 @@ public class MultimediaFilesManagerController {
    private static final Comparator<MultimediaFile> VIDEO_FILES_COMPARATOR_ASC = new Comparator<MultimediaFile>() {
       @Override
       public int compare(MultimediaFile file1, MultimediaFile file2) {
-         long diff = file1.getCreationDate().getTime() - file2.getCreationDate().getTime();
+         long diff = file1.getCreationDateOrig().getTime() - file2.getCreationDateOrig().getTime();
          return (diff == 0) ? 0 : (diff > 0 ? 1 : -1);
       }
    };
@@ -43,7 +43,7 @@ public class MultimediaFilesManagerController {
    private static final Comparator<MultimediaFile> VIDEO_FILES_COMPARATOR_DESC = new Comparator<MultimediaFile>() {
       @Override
       public int compare(MultimediaFile file1, MultimediaFile file2) {
-         long diff = file1.getCreationDate().getTime() - file2.getCreationDate().getTime();
+         long diff = file1.getCreationDateOrig().getTime() - file2.getCreationDateOrig().getTime();
          return (diff == 0) ? 0 : (diff > 0 ? -1 : 1);
       }
    };
@@ -83,7 +83,8 @@ public class MultimediaFilesManagerController {
                   }
 
                   File foundFile = filePath.toFile();
-                  videoFiles.add(new MultimediaFile(foundFile.getName(), new Date(foundFile.lastModified()), foundFile.length()));
+                  videoFiles.add(new MultimediaFile(foundFile.getName(),
+                        new Date(foundFile.lastModified()), foundFile.length()));
                }
                return FileVisitResult.CONTINUE;
             }
