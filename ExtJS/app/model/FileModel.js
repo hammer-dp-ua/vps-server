@@ -6,7 +6,8 @@ Ext.define('VPSServer.model.FileModel', {
       {name: 'creationDate',  type: 'string'},
       {
          name: 'size',
-         type: 'int',
+         type: 'float',
+         sortType: 'asFloat',
          convert: function (val) {
             if (val) {
                return parseFloat(val / 1024 / 1024).toFixed(2);
