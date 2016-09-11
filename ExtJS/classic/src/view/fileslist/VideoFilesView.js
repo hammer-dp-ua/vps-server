@@ -22,7 +22,8 @@ Ext.define('VPSServer.view.fileslist.VideoFilesView', {
    title: 'Uploaded files',
 
    columns: [
-      {
+      /*{
+         hidden: true,
          text: "Name",
          dataIndex: "name",
          sortable: true,
@@ -30,10 +31,23 @@ Ext.define('VPSServer.view.fileslist.VideoFilesView', {
          renderer: function (value) {
             return '<a href="' + VPSServer.view.main.MainController.VIDEO_FILES_URI + value + '" target="_blank">' + value + '</a>';
          }
-      },
-      {text: "Creation date", dataIndex: "creationDate", sortable: true, width: '30%'},
-      {text: "Size, MB", dataIndex: "size", sortable: true, width: '19%'},
+      },*/
       {
+         text: "Preview",
+         dataIndex: "name",
+         sortable: false,
+         width: '25%',
+         align: "center",
+         menuDisabled: true,
+         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+         return '<img src="' + "images/" +
+            value.replace(VPSServer.view.main.MainController.VIDEO_FILES_EXTENSION, "") + "/001" +
+            VPSServer.view.main.MainController.IMAGE_FILES_EXTENSION + '" class="first-image-preview" action="openImagesPreview">';
+      }
+      },
+      {text: "Creation date", dataIndex: "creationDate", sortable: true, width: '48%'},
+      {text: "Size, MB", dataIndex: "size", sortable: true, width: '15%'},
+      /*{
          menuDisabled: true,
          test: "Images",
          sortable: false,
@@ -45,7 +59,7 @@ Ext.define('VPSServer.view.fileslist.VideoFilesView', {
             tooltip: 'View images',
             handler: 'onClickOpenImagesPreview'
          }]
-      },
+      },*/
       {
          menuDisabled: true,
          sortable: false,
@@ -72,6 +86,11 @@ Ext.define('VPSServer.view.fileslist.VideoFilesView', {
       }
    ],
    listeners: {
-      afterRender: 'onAfterRender'
+      afterRender: 'onAfterRender',
+
+      itemclick: function(view, record, item, index, event) {
+         var action = event.target.getAttribute('action');
+         this.getController().actionHandler(action, record.data.name);
+      }
    }
 });

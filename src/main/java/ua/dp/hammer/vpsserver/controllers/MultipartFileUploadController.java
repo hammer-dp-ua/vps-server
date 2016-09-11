@@ -26,6 +26,7 @@ public class MultipartFileUploadController {
 
    @RequestMapping(value = "/videoUpload", method = RequestMethod.POST)
    public void handleVideoFileUpload(@RequestParam("file") MultipartFile file,
+                                     @RequestParam("creationDate") String creationDate,
                                      HttpServletRequest httpServletRequest,
                                      HttpServletResponse httpServletResponse) {
       try {
@@ -34,6 +35,7 @@ public class MultipartFileUploadController {
 
          File fileDestination = new File(appConfig.getVideoDirectory() + "/" + file.getOriginalFilename());
          file.transferTo(fileDestination);
+         fileDestination.setLastModified(Long.parseLong(creationDate));
          httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 
          LOGGER.info(file.getOriginalFilename() + " file has been uploaded. Size: " + (fileDestination.length() / 1024 / 1024) + "MB");

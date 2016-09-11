@@ -28,5 +28,12 @@ Ext.define('VPSServer.view.fileslist.VideoFilesController', {
 
       this.getView().hide();
       Ext.GlobalEvents.fireEventArgs('displayImageFiles', [this.getView(), fileName]);
+   },
+
+   actionHandler: function(action, videoFileName) {
+      if (action === 'openImagesPreview') {
+         this.getView().hide();
+         Ext.GlobalEvents.fireEventArgs('displayImageFiles', [this.getView(), videoFileName]);
+      }
    }
 });
